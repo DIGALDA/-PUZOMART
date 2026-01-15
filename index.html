@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПУЗОМАРТ - Супермаркет</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ОБНОВЛЕННОЕ МЕНЮ С ОТСТУПАМИ */
+        header {
+            height: 72px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            justify-content: space-between;
+            background-color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: 200px; /* Отступ логотипа 200px слева */
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: #008E38;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .logo-text {
+            font-weight: 600;
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            color: #374151;
+            font-weight: 500;
+            position: absolute; /* Для центрирования */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Иконки справа с отступом */
+        .icons {
+            margin-right: 200px; /* Отступ иконок 200px справа */
+            font-size: 24px;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav div {
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        nav div:hover {
+            background-color: #f3f4f6;
+        }
+        
+        nav div.active {
+            color: #22c55e;
+            background-color: #f0f9ff;
+        }
+        
+        .icons span {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+        
+        .icons span:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* УЛУЧШЕННЫЕ КАРТОЧКИ ТОВАРОВ */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e8e8e8;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+            height: 420px; /* Фиксированная высота для карточки */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+        }
+
+        /* УЛУЧШЕННОЕ ОТОБРАЖЕНИЕ КАРТИНОК */
+        .product-image-container {
+            width: 100%;
+            height: 200px; /* Увеличена высота для изображений */
+            overflow: hidden;
+            position: relative;
+            background-color: #f5f5f5; /* Светлый фон для изображений */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Изменено с cover на contain для полного отображения */
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        /* Заглушка для отсутствующих изображений */
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .product-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #222;
+            line-height: 1.4;
+            height: 60px; /* Фиксированная высота для названия */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+        }
+
+        .rating {
+            color: #FF9800;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rating .star {
+            font-size: 1.1rem;
+        }
+
+        .price-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto; /* Прижимаем к низу */
+        }
+
+        .prices {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .current-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2E7D32;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1rem;
+        }
+
+        .cart-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .cart-btn:hover {
+            background-color: #388E3C;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #F44336;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        /* Остальные стили остаются без изменений */
+        .store-title {
+            text-align: center;
+            padding: 40px 20px 30px;
+            background-color: #008E38;
+            border-radius: 12px;
+            margin: 20px;
+            color: white;
+        }
+
+        .store-title h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            font-weight: bold;
+        }
+
+        .store-title .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            line-height: 1.4;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .photo-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .photo-btn {
+            background-color: white;
+            color: #008E38;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            font-size: 1.1rem;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .photo-btn.statistics-btn {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .photo-btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+
+        .photo-btn.statistics-btn:hover {
+            background-color: #FF8C00;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+        h2 {
+            color: #008E38;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+            font-size: 1.8rem;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .category-item {
+            background-color: #E8F5E9;
+            padding: 18px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            border: 1px solid #C8E6C9;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .category-item:hover {
+            background-color: #C8E6C9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .advantages-section {
+            background-color: #F9FDF9;
+            border: 2px solid #E8F5E9;
+            padding: 40px;
+            margin-top: 40px;
+            border-radius: 12px;
+        }
+
+        .advantages-section h2 {
+            text-align: center;
+            border-bottom: none;
+            font-size: 2rem;
+            color: #2E7D32;
+            margin-bottom: 40px;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .advantage-item {
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #E8F5E9;
+            transition: transform 0.3s;
+        }
+
+        .advantage-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+
+        .advantage-item h3 {
+            color: #2E7D32;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .advantage-item p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .advantage-icon {
+            font-size: 3rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background: #0b1220;
+            color: #9ca3af;
+            padding: 48px 40px 24px;
+            margin-top: 50px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 2fr 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 32px;
+            max-width: 1200px;
+            margin: 0 auto 32px;
+        }
+
+        footer h4 {
+            color: #fff;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        footer p, footer li {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer li {
+            margin-bottom: 8px;
+        }
+
+        .quick-links {
+            list-style: none;
+            margin-top: 5px;
+        }
+
+        .quick-links li {
+            margin-bottom: 8px;
+        }
+
+        .quick-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            display: block;
+        }
+
+        .quick-links a:hover {
+            color: #4CAF50;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #1f2937;
+            padding-top: 16px;
+            font-size: 14px;
+            text-align: center;
+            color: #9ca3af;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+
+
+
+.care-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.care-card {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.3s;
+}
+
+.care-card:hover {
+  transform: translateY(-5px);
+}
+
+.care-card h3 {
+  margin-bottom: 10px;
+  color: #166534;
+}
+
+
+
+
+
+
+
+
+
+
+  /* ДОРАБОТАННЫЙ СЕКЦИЯ ВЫБЕРИТЕ СВОЮ ВЫГОДУ */
+        .promo-section {
+            padding: 30px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e6f7ec 100%);
+            border: 2px solid #BBF7D0;
+            border-radius: 16px;
+            margin: 30px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .promo-section h2 {
+            color: #166534;
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .promo-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #22c55e, #86EFAC);
+            border-radius: 2px;
+        }
+        
+        .promo-subtitle {
+            text-align: center;
+            color: #4B5563;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+        
+        .promo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .promo-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .promo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #22c55e, #86EFAC);
+        }
+        
+        .promo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .promo-card.highlighted {
+            border: 2px solid #22c55e;
+            transform: scale(1.02);
+        }
+        
+        .promo-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            padding: 15px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e6f7ec 0%, #d1fae5 100%);
+        }
+        
+        .promo-card h3 {
+            color: #166534;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .promo-discount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #22c55e;
+            margin: 15px 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .promo-desc {
+            color: #6B7280;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+        
+        .promo-btn {
+            background: linear-gradient(to right, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .promo-btn:hover {
+            background: linear-gradient(to right, #16a34a, #15803d);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(34, 197, 94, 0.3);
+        }
+        
+        .promo-btn:active {
+            transform: translateY(0);
+        }
+        
+        .promo-btn.disabled {
+            background: #9CA3AF;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .promo-bonus-section {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 14px;
+            padding: 30px;
+            margin-top: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .promo-bonus-section::before {
+            content: '⭐';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            font-size: 8rem;
+            opacity: 0.1;
+            transform: rotate(15deg);
+        }
+        
+        .bonus-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .bonus-content h3 {
+            color: #fbbf24;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .bonus-desc {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: #E5E7EB;
+            line-height: 1.6;
+        }
+        
+        .bonus-progress {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #fbbf24, #f59e0b);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #9CA3AF;
+            margin-bottom: 20px;
+        }
+        
+        .bonus-btn {
+            background: linear-gradient(to right, #fbbf24, #f59e0b);
+            color: #1e293b;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.3);
+        }
+        
+        .bonus-btn:hover {
+            background: linear-gradient(to right, #f59e0b, #d97706);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+        }
+        
+        .bonus-btn:active {
+            transform: translateY(0);
+        }
+        
+        .selected-promo {
+            background: #e6f7ec;
+            border: 2px solid #22c55e;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .selected-promo.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .selected-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #166534;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        /* Анимация при выборе промо */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+        
+        /* Адаптивность для промо-секции */
+        @media (max-width: 768px) {
+            .promo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .promo-section h2 {
+                font-size: 1.8rem;
+            }
+            
+            .promo-card {
+                padding: 20px;
+            }
+            
+            .promo-bonus-section {
+                padding: 20px;
+            }
+            
+            .bonus-btn {
+                padding: 14px 30px;
+                font-size: 1.1rem;
+            }
+        }
+
+
+
+/* КНОПКА ЧАТА */
+#chatbot-button {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  background: #22c55e;
+  color: white;
+  font-size: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+/* ОКНО ЧАТА */
+#chatbot-window {
+  position: fixed;
+  bottom: 100px;
+  right: 25px;
+  width: 320px;
+  height: 420px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+/* ШАПКА */
+.chatbot-header {
+  background: #22c55e;
+  color: white;
+  padding: 12px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.chatbot-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* СООБЩЕНИЯ */
+.chatbot-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background: #f9fafb;
+}
+
+.bot-message,
+.user-message {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  max-width: 85%;
+}
+
+.bot-message {
+  background: #e5f9ed;
+  align-self: flex-start;
+}
+
+.user-message {
+  background: #22c55e;
+  color: white;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+/* ВВОД */
+.chatbot-input {
+  display: flex;
+  border-top: 1px solid #e5e7eb;
+}
+
+.chatbot-input input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.chatbot-input button {
+  background: #22c55e;
+  border: none;
+  color: white;
+  padding: 0 18px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .logo {
+                margin-left: 100px;
+            }
+            .icons {
+                margin-right: 100px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .photo-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .photo-btn {
+                width: 80%;
+                text-align: center;
+            }
+            
+            .store-title h1 {
+                font-size: 2.2rem;
+            }
+            
+            .store-title .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .advantages-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+            
+            .logo {
+                margin-left: 20px;
+            }
+            .icons {
+                margin-right: 20px;
+            }
+            nav {
+                position: static;
+                transform: none;
+                margin: 10px 0;
+            }
+            header {
+                flex-direction: column;
+                height: auto;
+                padding: 15px 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 25px;
+            }
+            
+            .advantages-section {
+                padding: 30px 20px;
+            }
+            
+            .advantage-item {
+                padding: 20px;
+            }
+            
+            .store-title h1 {
+                font-size: 1.8rem;
+            }
+            
+            .store-title .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .store-title {
+                margin: 10px;
+                padding: 30px 15px;
+            }
+            
+            .product-card {
+                height: 400px;
+            }
+            
+            .product-image-container {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .advantage-item h3 {
+                font-size: 1.3rem;
+            }
+            
+            .advantage-item p {
+                font-size: 1rem;
+            }
+            
+            .advantage-icon {
+                font-size: 2.5rem;
+            }
+            
+            .store-title h1 {
+                font-size: 1.5rem;
+            }
+            
+            .store-title .subtitle {
+                font-size: 1rem;
+            }
+            
+            .photo-btn {
+                min-width: 150px;
+                font-size: 1rem;
+            }
+            
+            .product-card {
+                height: 380px;
+            }
+            
+            .product-image-container {
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ОБНОВЛЕННОЕ МЕНЮ -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">⬜️</div>
+            <div class="logo-text">
+                ПУЗОМАРТ
+                <span>супермаркет</span>
+            </div>
+        </div>
+        
+        <nav>
+            <div class="active" onclick="window.location.href='index.html'">Главная</div>
+            <div onclick="window.location.href='basket.html'">Каталог</div>
+        </nav>
+        
+        <div class="icons">
+            <span onclick="window.location.href='korzina.html'">🛒</span>
+            <span onclick="window.location.href='login.html'">👤</span>
+        </div>
+    </header>
+
+    <div class="store-title">
+        <h1>Добро пожаловать в ПУЗОМАРТ</h1>
+        <p class="subtitle">Лучшие цены на качественные продукты. Проверьте наши средние цены на странице "Статистика цен"!</p>
+        
+        <div class="photo-buttons">
+            <a href="basket.html" class="photo-btn">Перейти в каталог →</a>
+        </div>
+    </div>
+
+    <div class="container">
+
+
+
+<section class="section care-section">
+  <h2>Мы заботимся о вашем пузике 💚</h2>
+
+  <div class="care-grid">
+    <div class="care-card">
+      <h3>🥗 Советы по питанию</h3>
+      <p>Ешьте больше овощей, пейте воду и выбирайте свежие продукты каждый день.</p>
+    </div>
+
+    <div class="care-card">
+      <h3>👨‍👩‍👧 Для семьи</h3>
+      <p>Подборка продуктов для завтраков, обедов и ужинов всей семьи.</p>
+    </div>
+
+    <div class="care-card">
+      <h3>🧒 Для детей</h3>
+      <p>Полезные и безопасные продукты без лишнего сахара.</p>
+    </div>
+
+    <div class="care-card">
+      <h3>🍝 После работы</h3>
+      <p>Быстрые и сытные блюда, которые легко приготовить вечером.</p>
+    </div>
+  </div>
+</section>
+
+        <section class="section">
+            <h2>Категории товаров</h2>
+            <div class="categories-grid">
+                <div class="category-item" data-category="milk">Молочные продукты</div>
+<div class="category-item" data-category="meat">Мясо и птица</div>
+<div class="category-item" data-category="fruits">Фрукты</div>
+<div class="category-item" data-category="vegetables">Овощи</div>
+<div class="category-item" data-category="bread">Хлебобулочные изделия</div>
+<div class="category-item" data-category="groats">Крупы</div>
+<div class="category-item" data-category="eggs">Яйца</div>
+
+            </div>
+        </section>
+
+        <section class="section popular-products">
+            <h2>Популярные товары</h2>
+            <div class="products-grid">
+                <div class="product-card" data-id="1">
+                    <div class="product-image-container">
+                        <img src="./img/Простокавшино" alt="Молоко" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Молоко "Простокавшино" 3,2%</div>
+                        <div class="rating"><span class="star">✿</span> 4.8 (2)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">89 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card" data-id="2">
+                    <div class="product-image-container">
+                        <img src="./img/Тренни Смит.png" alt="Яблоки" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Яблоки "Тренни Смит"</div>
+                        <div class="rating"><span class="star">✿</span> 4.7 (2)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">149 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card" data-id="3">
+                    <div class="product-image-container">
+                        <img src="./img/Куриная грудка.webp" alt="Куриная грудка" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Куриная грудка охлажденная</div>
+                        <div class="rating"><span class="star">✿</span> 4.9 (2)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">329 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card" data-id="4">
+                    <div class="product-image-container">
+                        <img src="./img/Томаты черри.webp" alt="Томаты черри" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Томаты черри</div>
+                        <div class="rating"><span class="star">✿</span> 4.5 (1)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">199 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card" data-id="5">
+                    <div class="product-image-container">
+                        <img src="./img/Увелка" alt="Греча" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Греча "Увелка"</div>
+                        <div class="rating"><span class="star">✿</span> 4.7 (1)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">119 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card"data-id="6">
+                    <div class="product-image-container">
+                        <img src="./img/Хлеб Бородинский.png" alt="Хлеб" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Хлеб "Бородинский"</div>
+                        <div class="rating"><span class="star">✿</span> 4.6 (1)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">55 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Акции и скидки</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="discount-badge">-15%</div>
+                    <div class="product-image-container">
+                        <img src="./img/Простокавшино" alt="Молоко" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Молоко "Простокавшино" 3,2%</div>
+                        <div class="rating">4.8 (2)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">89 ₽</span>
+                                <span class="old-price">105 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount-badge">-17%</div>
+                    <div class="product-image-container">
+                        <img src="./img/Тренни Смит.png" alt="Яблоки" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Яблоки "Тренни Смит"</div>
+                        <div class="rating">4.7 (2)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">149 ₽</span>
+                                <span class="old-price">179 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount-badge">-18%</div>
+                    <div class="product-image-container">
+                        <img src="./img/Куриная грудка.webp" alt="Куриная грудка" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Куриная грудка охлажденная</div>
+                        <div class="rating">4.9 (2)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">329 ₽</span>
+                                <span class="old-price">399 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount-badge">-14%</div>
+                    <div class="product-image-container">
+                        <img src="./img/Масло сливочное.jpg" alt="Сливочное масло" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Масло сливочное "Экомилк"</div>
+                        <div class="rating">4.6 (1)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">249 ₽</span>
+                                <span class="old-price">289 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="discount-badge">-18%</div>
+                    <div class="product-image-container">
+                        <img src="./img/Огурцы свежие.webp" alt="Огурцы" class="product-image">
+                    </div>
+                    <div class="product-content">
+                        <div class="product-name">Огурцы свежие</div>
+                        <div class="rating">4.6 (1)</div>
+                        <div class="price-block">
+                            <div class="prices">
+                                <span class="current-price">139 ₽</span>
+                                <span class="old-price">169 ₽</span>
+                            </div>
+                            <button class="cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="container">
+        <section class="advantages-section">
+            <h2>Наши преимущества</h2>
+            <div class="advantages-grid">
+                <div class="advantage-item">
+                    <div class="advantage-icon">🛒</div>
+                    <h3>Широкий ассортимент</h3>
+                    <p>Более 1000 наименований свежих и качественных товаров</p>
+                </div>
+                <div class="advantage-item">
+                    <div class="advantage-icon">💰</div>
+                    <h3>Лучшие цены</h3>
+                    <p>Проверяйте наши средние цены на странице "Статистика цен"</p>
+                </div>
+                <div class="advantage-item">
+                    <div class="advantage-icon">⭐</div>
+                    <h3>Высокое качество</h3>
+                    <p>Только проверенные поставщики и свежие продукты</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h4>О компании</h4>
+                <p>ПУЗОМАРТ — современный супермаркет с лучшими ценами и качественным обслуживанием.</p>
+            </div>
+    
+            <div>
+                <h4>Покупателям</h4>
+                <ul>
+                    <li>Доставка и оплата</li>
+                    <li>Гарантия и возврат</li>
+                    <li>Бонусная программа</li>
+                </ul>
+            </div>
+    
+            <div>
+                <h4>Контакты</h4>
+                <ul>
+                    <li>+7 (800) 555-35-35</li>
+                    <li>info@srat.ru</li>
+                    <li>Пн–Вс: 8:00–22:00</li>
+                </ul>
+            </div>
+    
+            <div>
+                <h4>Быстрые ссылки</h4>
+                <ul class="quick-links">
+                    <li><a href="basket.html">Каталог</a></li>
+                    <li><a href="#">Акции</a></li>
+                </ul>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            © 2025 ПУЗОМАРТ. Все права защищены.
+        </div>
+    </footer>
+
+
+
+
+    <script>
+        // Автоматическое выделение активной страницы в меню
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navItems = document.querySelectorAll('nav div');
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                const text = item.textContent.trim();
+                
+                if (currentPage === 'index.html' && text === 'Главная') {
+                    item.classList.add('active');
+                } else if (currentPage === 'basket.html' && text === 'Каталог') {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Обработка кликов по иконкам
+            document.querySelectorAll('.icons span').forEach(icon => {
+                icon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const iconText = this.textContent;
+                    
+                    if (iconText === '🛒') {
+                        window.location.href = 'korzina.html';
+                    } else if (iconText === '👤') {
+                        window.location.href = 'login.html';
+                    }
+                });
+            });
+            
+            // Обработка кликов по навигации
+            document.querySelectorAll('nav div').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const text = this.textContent.trim();
+                    
+                    if (text === 'Главная') {
+                        window.location.href = 'index.html';
+                    } else if (text === 'Каталог') {
+                        window.location.href = 'basket.html';
+                    } else if (text === 'Статистика цен') {
+                        alert('Страница статистики цен в разработке');
+                    }
+                });
+            });
+            
+            // Добавление товаров в корзину
+            const cartButtons = document.querySelectorAll('.cart-btn');
+            cartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.closest('.product-card').querySelector('.product-name').textContent;
+                    const productPrice = this.closest('.product-card').querySelector('.current-price').textContent;
+                    
+                    alert(`Товар "${productName}" за ${productPrice} добавлен в корзину!`);
+                    
+                    // Визуальная обратная связь
+                    const originalText = this.textContent;
+                    this.textContent = 'Добавлено!';
+                    this.style.backgroundColor = '#45a049';
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.style.backgroundColor = '';
+                    }, 1500);
+                });
+            });
+            
+            // Обработка изображений для показа их полностью
+            document.querySelectorAll('.product-image').forEach(img => {
+                img.addEventListener('error', function() {
+                    // Если изображение не загружается, показываем заглушку
+                    const productName = this.closest('.product-card').querySelector('.product-name').textContent;
+                    const container = this.parentElement;
+                    
+                    // Создаем текстовую заглушку с названием товара
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'image-placeholder';
+                    placeholder.textContent = productName;
+                    
+                    // Заменяем сломанное изображение на заглушку
+                    this.style.display = 'none';
+                    container.appendChild(placeholder);
+                });
+            });
+        });
+
+
+
+
+
+
+
+
+
+        function chooseDiscount(type) {
+  if (type === 'fruits') {
+    alert('🎉 Отлично! Вам начислена скидка 10% на фрукты');
+  } else {
+    alert('🎉 Отлично! Вам начислена скидка 15% на молоко');
+  }
+}
+
+function collectBasketBonus() {
+  alert('⭐ Соберите корзину на 1500 ₽ и получите бонусы!');
+}
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  const btn = document.getElementById('chatbot-button');
+  const win = document.getElementById('chatbot-window');
+  const close = document.getElementById('chatbot-close');
+  const send = document.getElementById('chatbot-send');
+  const input = document.getElementById('chatbot-input');
+  const messages = document.getElementById('chatbot-messages');
+
+  /* ОТКРЫТЬ ЧАТ */
+  btn.addEventListener('click', () => {
+    win.style.display = 'flex';
+    input.focus();
+  });
+
+  /* ЗАКРЫТЬ ЧАТ */
+  close.addEventListener('click', () => {
+    win.style.display = 'none';
+  });
+
+  /* ОТПРАВКА */
+  send.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+    input.value = '';
+
+    setTimeout(() => botReply(text), 600);
+  }
+
+  function addMessage(text, type) {
+    const msg = document.createElement('div');
+    msg.className = type === 'user' ? 'user-message' : 'bot-message';
+    msg.textContent = text;
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function botReply(text) {
+    const t = text.toLowerCase();
+    let reply = '🤖 Я помогу с доставкой, акциями и бонусами.';
+
+    if (t.includes('привет')) reply = '👋 Привет! Добро пожаловать в ПУЗОМАРТ!';
+    else if (t.includes('доставка')) reply = '🚚 Доставка ежедневно с 8:00 до 22:00.';
+    else if (t.includes('акци')) reply = '🔥 Сейчас: 10% на фрукты и 15% на молоко.';
+    else if (t.includes('бонус')) reply = '⭐ Бонусы начисляются от заказа 1500 ₽.';
+    else if (t.includes('корзин')) reply = '🛒 Добавляйте товары кнопкой «В корзину».';
+    else if (t.includes('спасибо')) reply = '💚 Всегда рады помочь!';
+
+    addMessage(reply, 'bot');
+  }
+
+});
+
+
+
+
+
+
+
+
+
+
+// Переход в каталог по категории
+document.querySelectorAll('.category-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const category = item.dataset.category;
+    localStorage.setItem('selectedCategory', category);
+    window.location.href = 'basket.html';
+  });
+});
+
+
+    </script>
+
+
+
+<!-- ЧАТ-БОТ -->
+<div id="chatbot-button">💬</div>
+
+<div id="chatbot-window">
+  <div class="chatbot-header">
+    <span>ПУЗОБОТ 🤖</span>
+    <button id="chatbot-close">✖</button>
+  </div>
+
+  <div class="chatbot-messages" id="chatbot-messages">
+    <div class="bot-message">
+      👋 Здравствуйте! Я Пузобот.  
+      Чем могу помочь?
+    </div>
+  </div>
+
+  <div class="chatbot-input">
+    <input type="text" id="chatbot-input" placeholder="Введите сообщение..." />
+    <button id="chatbot-send">➤</button>
+  </div>
+</div>
+
+</body>
+</html>

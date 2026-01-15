@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Регистрация</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9fafb;
+      color: #111827;
+    }
+
+    /* ОБНОВЛЕННОЕ МЕНЮ */
+    header {
+      height: 72px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 200px; /* Отступ логотипа 200px слева */
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: #22c55e;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .logo-text {
+      font-weight: 600;
+    }
+
+    .logo-text span {
+      display: block;
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 400;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+      color: #374151;
+      font-weight: 500;
+      position: absolute; /* Для центрирования */
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Иконки справа с отступом */
+    .icons {
+      margin-right: 200px; /* Отступ иконок 200px справа */
+      font-size: 24px;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav div {
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    
+    nav div:hover {
+      background-color: #f3f4f6;
+    }
+    
+    nav div.active {
+      color: #22c55e;
+      background-color: #f0f9ff;
+    }
+    
+    .icons span {
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+    
+    .icons span:hover {
+      background-color: #f3f4f6;
+    }
+
+    .icons span.active-icon {
+      background: #22c55e;
+      color: white;
+    }
+
+    /* ===== PAGE ===== */
+    .page {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+      text-align: center;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #e0ecff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 28px;
+      color: #2563eb;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+
+    /* ===== FORM ===== */
+    .field {
+      text-align: left;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .field input {
+      width: 100%;
+      height: 44px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      padding: 0 14px;
+      font-size: 14px;
+    }
+
+    .field input::placeholder {
+      color: #9ca3af;
+    }
+
+    .btn-primary {
+      width: 100%;
+      height: 48px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .divider {
+      margin: 20px 0;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .muted {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+
+    .link {
+      display: block;
+      font-size: 14px;
+      color: #2563eb;
+      text-decoration: none;
+      margin-top: 12px;
+    }
+
+    footer {
+      background: #0b1220;
+      color: #9ca3af;
+      padding: 48px 40px 24px;
+      margin-top: 50px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 2fr 2fr 1fr;
+      gap: 40px;
+      margin-bottom: 32px;
+      max-width: 1200px;
+      margin: 0 auto 32px;
+    }
+
+    footer h4 {
+      color: #fff;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    footer p, footer li {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    footer ul {
+      list-style: none;
+    }
+
+    footer li {
+      margin-bottom: 8px;
+    }
+
+    .quick-links {
+      list-style: none;
+      margin-top: 5px;
+    }
+
+    .quick-links li {
+      margin-bottom: 8px;
+    }
+
+    .quick-links a {
+      color: #9ca3af;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+      display: block;
+    }
+
+    .quick-links a:hover {
+      color: #4CAF50;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #1f2937;
+      padding-top: 16px;
+      font-size: 14px;
+      text-align: center;
+      color: #9ca3af;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Адаптивность для новых отступов */
+    @media (max-width: 1200px) {
+      .logo {
+        margin-left: 100px;
+      }
+      .icons {
+        margin-right: 100px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 0 20px;
+        flex-direction: column;
+        height: auto;
+        padding: 15px 20px;
+      }
+      
+      nav {
+        position: static;
+        transform: none;
+        margin: 10px 0;
+      }
+      
+      .logo {
+        margin-left: 0;
+      }
+      
+      .icons {
+        margin-right: 0;
+      }
+      
+      .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ОБНОВЛЕННОЕ МЕНЮ -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">⬜</div>
+      <div class="logo-text">
+        ПУЗОМАРТ
+        <span>супермаркет</span>
+      </div>
+    </div>
+
+    <nav>
+      <div onclick="window.location.href='index.html'">Главная</div>
+      <div onclick="window.location.href='basket.html'">Каталог</div>
+    </nav>
+
+    <div class="icons">
+      <span onclick="window.location.href='korzina.html'">🛒</span>
+      <span class="active-icon" onclick="window.location.href='login.html'">👤</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="card">
+      <div class="avatar">📝</div>
+      <h1>Регистрация</h1>
+      <div class="subtitle">
+        Создайте аккаунт для оформления заказов
+      </div>
+
+      <form>
+        <div class="field">
+          <label>Имя</label>
+          <input type="text" placeholder="Иван">
+        </div>
+
+        <div class="field">
+          <label>Email или телефон</label>
+          <input type="text" placeholder="example@email.com">
+        </div>
+
+        <div class="field">
+          <label>Пароль</label>
+          <input type="password" placeholder="••••••••">
+        </div>
+
+        <div class="field">
+          <label>Повторите пароль</label>
+          <input type="password" placeholder="••••••••">
+        </div>
+
+        <button class="btn-primary" type="button" onclick="window.location.href='kabinet.html'">
+          Зарегистрироваться
+        </button>
+      </form>
+
+      <div class="divider"></div>
+      <div class="muted">Уже есть аккаунт?</div>
+      <a href="login.html" class="link">
+        Войти в личный кабинет
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <h4>О компании</h4>
+        <p>ПУЗОМАРТ — современный супермаркет с лучшими ценами и качественным обслуживанием.</p>
+      </div>
+
+      <div>
+        <h4>Покупателям</h4>
+        <ul>
+          <li>Доставка и оплата</li>
+          <li>Гарантия и возврат</li>
+          <li>Бонусная программа</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Контакты</h4>
+        <ul>
+          <li>+7 (800) 555-35-35</li>
+          <li>info@srat.ru</li>
+          <li>Пн–Вс: 8:00–22:00</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Быстрые ссылки</h4>
+        <ul class="quick-links">
+          <li><a href="basket.html">Каталог</a></li>
+          <li><a href="#">Акции</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 ПУЗОМАРТ. Все права защищены.
+    </div>
+  </footer>
+
+  <script>
+    // Автоматическое выделение активной страницы в меню
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      const navItems = document.querySelectorAll('nav div');
+      
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        const text = item.textContent.trim();
+        
+        if (currentPage === 'index.html' && text === 'Главная') {
+          item.classList.add('active');
+        } else if (currentPage === 'basket.html' && text === 'Каталог') {
+          item.classList.add('active');
+        }
+      });
+      
+      // Подсветка иконки пользователя на страницах входа/регистрации/кабинета
+      if (currentPage === 'login.html' || currentPage === 'registr.html' || currentPage === 'kabinet.html') {
+        const userIcon = document.querySelector('.icons span:last-child');
+        if (userIcon) {
+          userIcon.classList.add('active-icon');
+        }
+      }
+      
+      // Обработка кликов по иконкам (без алертов)
+      document.querySelectorAll('.icons span').forEach(icon => {
+        icon.addEventListener('click', function(e) {
+          e.preventDefault();
+          const iconText = this.textContent;
+          
+          if (iconText === '🛒') {
+            window.location.href = 'korzina.html';
+          } else if (iconText === '👤') {
+            window.location.href = 'login.html';
+          }
+        });
+      });
+      
+      // Обработка кликов по навигации (без алертов)
+      document.querySelectorAll('nav div').forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          const text = this.textContent.trim();
+          
+          if (text === 'Главная') {
+            window.location.href = 'index.html';
+          } else if (text === 'Каталог') {
+            window.location.href = 'basket.html';
+          } else if (text === 'Статистика цен') {
+            alert('Страница статистики цен в разработке');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

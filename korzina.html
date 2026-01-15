@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>ПУЗОМАРТ — Корзина</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+}
+
+
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(180deg,#f9fafb,#ffffff);
+  color:#111827;
+}
+
+/* ---------- HEADER (без изменений) ---------- */
+/* МЕНЮ */
+        header {
+            height: 72px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            padding: 0 200px;
+            justify-content: space-between;
+            background-color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: #22c55e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .logo-text {
+            font-weight: 600;
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            color: #374151;
+            font-weight: 500;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .icons {
+            font-size: 24px;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav div {
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        nav div:hover {
+            background-color: #f3f4f6;
+        }
+        
+        nav div.active {
+            color: #22c55e;
+            background-color: #f0f9ff;
+        }
+        
+        .icons span {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+        
+        .icons span:hover {
+            background-color: #f3f4f6;
+        }
+
+        .icons span.active-icon {
+            background: #22c55e;
+            color: white;
+        }
+
+/* ---------- MAIN ---------- */
+main{
+  max-width:1100px;
+  margin:40px auto;
+  padding:0 20px;
+}
+
+.cart-layout{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:30px;
+}
+
+.cart-box{
+  background:#fff;
+  border-radius:12px;
+  padding:25px;
+  box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.cart-item{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:15px 0;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.cart-item img{width:60px;border-radius:8px}
+.qty-controls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.qty-controls button{
+  width:28px;height:28px;
+  border:none;border-radius:6px;
+  background:#e5e7eb;
+  cursor:pointer;
+}
+
+.remove{cursor:pointer}
+
+/* ---------- PROMO ---------- */
+.promo label{
+  display:block;
+  margin-bottom:10px;
+  cursor:pointer;
+}
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  background:#2563eb;
+  color:#fff;
+  padding:12px 20px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  transition: background-color 0.2s;
+  font-weight: 600;
+}
+.btn:hover{
+  background:#1d4ed8;
+}
+.btn-clear{
+  background:#ef4444;
+  margin-top:10px;
+}
+.btn-clear:hover{
+  background:#dc2626;
+}
+
+/* Уведомление */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #10b981;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+  transform: translateX(120%);
+  transition: transform 0.3s ease-out;
+  max-width: 350px;
+}
+.notification.show {
+  transform: translateX(0);
+}
+.notification h4 {
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- FOOTER (без изменений) ---------- */
+
+
+
+ footer {
+      background: #0b1220;
+      color: #9ca3af;
+      padding: 48px 40px 24px;
+      margin-top: 80px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 2fr 2fr 1fr;
+      gap: 40px;
+      margin-bottom: 32px;
+      max-width: 1200px;
+      margin: 0 auto 32px;
+    }
+
+    footer h4 {
+      color: #fff;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    footer p, footer li {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    footer ul {
+      list-style: none;
+    }
+
+    footer li {
+      margin-bottom: 8px;
+    }
+
+    .quick-links {
+      list-style: none;
+      margin-top: 5px;
+    }
+
+    .quick-links li {
+      margin-bottom: 8px;
+    }
+
+    .quick-links a {
+      color: #9ca3af;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+      display: block;
+    }
+
+    .quick-links a:hover {
+      color: #4CAF50;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #1f2937;
+      padding-top: 16px;
+      font-size: 14px;
+      text-align: center;
+      color: #9ca3af;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Адаптивность для новых отступов */
+    @media (max-width: 1200px) {
+      .logo {
+        margin-left: 100px;
+      }
+      .icons {
+        margin-right: 100px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 0 20px;
+        flex-direction: column;
+        height: auto;
+        padding: 15px 20px;
+      }
+      
+      nav {
+        position: static;
+        transform: none;
+        margin: 10px 0;
+      }
+      
+      .logo {
+        margin-left: 0;
+      }
+      
+      .icons {
+        margin-right: 0;
+      }
+      
+      .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 25px;
+      }
+      
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+</style>
+</head>
+
+<body>
+
+<!-- Уведомление о заказе -->
+<div id="notification" class="notification">
+  <h4>✅ Заказ оформлен!</h4>
+  <p>Спасибо за покупку. Ваш заказ №${Math.floor(Math.random()*90000)+10000} принят в обработку.</p>
+</div>
+
+ <header>
+        <div class="logo">
+            <div class="logo-icon">⬜️</div>
+            <div class="logo-text">
+                ПУЗОМАРТ
+                <span>супермаркет</span>
+            </div>
+        </div>
+        
+        <nav>
+            <div class="active" onclick="window.location.href='index.html'">Главная</div>
+            <div onclick="window.location.href='basket.html'">Каталог</div>
+        </nav>
+        
+        <div class="icons">
+            <span onclick="window.location.href='korzina.html'">🛒</span>
+            <span onclick="window.location.href='login.html'">👤</span>
+        </div>
+    </header>
+
+<main id="cart-container"></main>
+
+ <footer>
+        <div class="footer-grid">
+            <div>
+                <h4>О компании</h4>
+                <p>ПУЗОМАРТ — современный супермаркет с лучшими ценами и качественным обслуживанием.</p>
+            </div>
+    
+            <div>
+                <h4>Покупателям</h4>
+                <ul>
+                    <li>Доставка и оплата</li>
+                    <li>Гарантия и возврат</li>
+                    <li>Бонусная программа</li>
+                </ul>
+            </div>
+    
+            <div>
+                <h4>Контакты</h4>
+                <ul>
+                    <li>+7 (800) 555-35-35</li>
+                    <li>info@srat.ru</li>
+                    <li>Пн–Вс: 8:00–22:00</li>
+                </ul>
+            </div>
+    
+            <div>
+                <h4>Быстрые ссылки</h4>
+                <ul class="quick-links">
+                    <li><a href="basket.html">Каталог</a></li>
+                    <li><a href="#">Акции</a></li>
+                </ul>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            © 2025 ПУЗОМАРТ. Все права защищены.
+        </div>
+    </footer>
+
+<script>
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let promo = null;
+
+function showNotification() {
+  const notification = document.getElementById('notification');
+  // Генерируем случайный номер заказа
+  const orderNumber = Math.floor(Math.random() * 90000) + 10000;
+  notification.querySelector('p').textContent = `Спасибо за покупку. Ваш заказ №${orderNumber} принят в обработку.`;
+  
+  notification.classList.add('show');
+  
+  // Автоматически скрываем уведомление через 5 секунд
+  setTimeout(() => {
+    notification.classList.remove('show');
+  }, 5000);
+}
+
+function checkout() {
+  if (cart.length === 0) {
+    alert('Корзина пуста! Добавьте товары перед оформлением заказа.');
+    return;
+  }
+  
+  // Показываем уведомление
+  showNotification();
+  
+  // Очищаем корзину
+  cart = [];
+  save();
+}
+
+function renderCart(){
+  const c = document.getElementById('cart-container');
+  if(cart.length===0){
+    c.innerHTML='<div class="cart-box"><h2 style="text-align:center;color:#6b7280">🛒 Корзина пуста</h2><p style="text-align:center;margin-top:10px">Добавьте товары из каталога</p></div>';
+    return;
+  }
+
+  let total=0;
+  let items = cart.map(i=>{
+    total+=i.price*i.qty;
+    return `
+    <div class="cart-item">
+      <img src="${i.image}">
+      <div style="flex:1">
+        <strong>${i.name}</strong><br>${i.price} ₽
+      </div>
+      <div class="qty-controls">
+        <button onclick="changeQty(${i.id},-1)">−</button>
+        ${i.qty}
+        <button onclick="changeQty(${i.id},1)">+</button>
+      </div>
+      <span class="remove" onclick="removeItem(${i.id})">❌</span>
+    </div>`;
+  }).join('');
+
+  let discount=0;
+  if(promo==='fruit') discount=total*0.10;
+  if(promo==='milk') discount=total*0.15;
+  let bonus = total>=2000?200:0;
+
+  c.innerHTML=`
+  <div class="cart-layout">
+    <div class="cart-box">
+      <h2>🛒 Ваша корзина</h2>
+      ${items}
+      <button class="btn btn-clear" onclick="clearCart()">Очистить корзину</button>
+    </div>
+
+    <div class="cart-box promo">
+      <h3>🎁 Мини-участие в акциях</h3>
+      <label><input type="radio" name="promo" onchange="setPromo('fruit')">
+        10% на фрукты
+      </label>
+      <label><input type="radio" name="promo" onchange="setPromo('milk')">
+        15% на молоко
+      </label>
+
+      <hr style="margin:15px 0">
+      <p>Сумма: <strong>${total.toFixed(0)} ₽</strong></p>
+      <p>Скидка: <strong>−${discount.toFixed(0)} ₽</strong></p>
+      <p>Бонусы: <strong>+${bonus}</strong></p>
+      <h3>Итого: ${(total-discount).toFixed(0)} ₽</h3>
+
+      <button class="btn" style="width:100%;margin-top:15px" onclick="checkout()">
+        Оформить заказ
+      </button>
+      <p style="text-align:center;margin-top:8px;color:#6b7280;font-size:14px">Нажимая кнопку, вы соглашаетесь с условиями покупки</p>
+    </div>
+  </div>`;
+}
+
+function changeQty(id,val){
+  cart=cart.map(i=>{
+    if(i.id===id) i.qty=Math.max(1,i.qty+val);
+    return i;
+  });
+  save();
+}
+function removeItem(id){
+  cart=cart.filter(i=>i.id!==id);
+  save();
+}
+function clearCart(){
+  cart=[];
+  save();
+}
+function setPromo(p){
+  promo=p;
+  renderCart();
+}
+function save(){
+  localStorage.setItem('cart',JSON.stringify(cart));
+  renderCart();
+}
+
+// Инициализация при загрузке
+renderCart();
+</script>
+</body>
+</html>
